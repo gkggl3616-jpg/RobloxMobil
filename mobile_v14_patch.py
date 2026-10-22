@@ -200,6 +200,40 @@ rep('        addMiniButton(actions,"🧩 Quetta", this::launchQuetta);',
 rep('        addMiniButton(bottom,"✓ Kaydet + Tekrarla",this::confirmAndRepeat);',
 '''        addMiniButton(bottom,"↻ Tekrarla",this::repeatOnly);''')
 
+
+# A user tap in the Quetta extension may return to the native app for 'Tekrarla'.
+rep('        acceptQuettaConfirmationIntent(getIntent());',
+'''        acceptQuettaConfirmationIntent(getIntent());
+        Uri startLink=getIntent().getData();
+        if(startLink!=null && "robloxkasa".equals(startLink.getScheme())
+                && "repeat".equals(startLink.getHost())) {
+            pendingFloatingAction="repeat";
+        }''')
+
+rep('        acceptQuettaConfirmationIntent(intent);',
+'''        acceptQuettaConfirmationIntent(intent);
+        Uri repeatLink=intent.getData();
+        if(repeatLink!=null && "robloxkasa".equals(repeatLink.getScheme())
+                && "repeat".equals(repeatLink.getHost())) {
+            pendingFloatingAction="repeat";
+        }''')
+
+# WebView and Quetta have different repeat destinations; never silently switch browsers.
+rep('        addMiniButton(bottom,"↻ Tekrarla",this::repeatOnly);',
+'''        addMiniButton(bottom,"↻ Tekrarla",this::repeatInsideWebview);''')
+
+rep('    private void showDashboard()',
+'''    private void repeatInsideWebview() {
+        if (activeRecord == null) { showDashboard(); return; }
+        if (!"confirmed".equals(activeRecord.optString("status"))) {
+            error("Önce Kaydet ile hesabın başarıyla oluşturulduğunu doğrula.");
+            return;
+        }
+        prepareNextRegistration();
+    }
+
+    private void showDashboard()''')
+
 main.write_text(s,encoding="utf-8")
 
 overlay=src/"FloatingBrowserBarService.java"
@@ -235,6 +269,17 @@ b='''            <intent-filter>
             </intent-filter>'''
 assert a in m, "intent filter not found"
 m=m.replace(a,b,1)
+# Quetta extension's Tekrarla link needs a separate browsable intent.
+repeat_filter='''            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="robloxkasa" android:host="repeat" />
+            </intent-filter>
+'''
+assert '    </activity>' in m
+m=m.replace('    </activity>',repeat_filter+'    </activity>',1)
+
 manifest.write_text(m,encoding="utf-8")
 
 gradle=root/"app/build.gradle"
