@@ -38,7 +38,8 @@ rep('    @Override protected void onStop() {',
         pendingFloatingAction = intent.getStringExtra("floatingAction");
         if (pendingFloatingAction != null) {
             if (vault == null && !authenticating) unlock(null);
-            else if (vault != null) runFloatingAction();
+            // Defer actions until onResume checks the 25-second vault lock.
+            else if (vault != null && backgroundAt == 0) runFloatingAction();
         }
     }
 
