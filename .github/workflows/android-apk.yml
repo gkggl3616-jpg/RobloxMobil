@@ -1,0 +1,45 @@
+name: Android APK olustur
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/android-apk.yml"
+      - "Roblox_Mobil_Kasa_Android_Kaynak_Kod_v1.zip"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kaynak kodlarini al
+        uses: actions/checkout@v4
+      - name: ZIP dosyasini ac
+        run: |
+          mkdir -p unpacked
+          unzip -q Roblox_Mobil_Kasa_Android_Kaynak_Kod_v1.zip -d unpacked
+          test -f unpacked/RobloxMobilKasa/app/build.gradle
+      - name: Java 17 kur
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Android SDK kur
+        uses: android-actions/setup-android@v3
+      - name: Android 35 paketlerini kur
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Gradle 8.9 kur
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: APK derle
+        working-directory: unpacked/RobloxMobilKasa
+        run: gradle --no-daemon assembleDebug --stacktrace
+      - name: APK dosyasini kaydet
+        uses: actions/upload-artifact@v4
+        with:
+          name: RobloxMobilKasa-APK
+          path: unpacked/RobloxMobilKasa/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
