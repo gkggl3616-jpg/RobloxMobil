@@ -40,7 +40,7 @@ span(
             "https://www.roblox.com/tr/CreateAccount#rkasa-next");
     }''')
 
-rep('        button(main, "Quetta\\'ya Doldur (panodan aktar)", true, this::fillInQuetta);',
+rep('        button(main, "Quetta\'ya Doldur (panodan aktar)", true, this::fillInQuetta);',
 '''        button(main, "Quetta eklentisinde Doldur (panosuz)", true, this::fillInQuetta);''')
 
 rep('        button(main, "Kaydet (yalnızca doğrulanmış hesap)", false, this::saveOnlyFromQuetta);',
@@ -49,7 +49,7 @@ rep('        button(main, "Kaydet (yalnızca doğrulanmış hesap)", false, this
 rep('        button(main, "Tekrarla (yeni bilgiler üret)", false, this::repeatOnly);',
 '''        button(main, "Quetta eklentisinde Tekrarla", false, this::repeatOnly);''')
 
-rep('        note("Quetta uygulamanın içine gömülü değildir. Üst/alt yüzen araç çubukları Quetta\\'nın üzerinde gösterilir. Chrome Web Store uzantıları yalnızca Quetta içinde çalışır.");',
+rep('        note("Quetta uygulamanın içine gömülü değildir. Üst/alt yüzen araç çubukları Quetta\'nın üzerinde gösterilir. Chrome Web Store uzantıları yalnızca Quetta içinde çalışır.");',
 '''        note("Quetta uygulamanın içine gömülü değildir. 50 hazır profil ve TXT yükleme Quetta eklentisindedir. APK kasası ve eklenti kasası ayrı depolardır. Eklenti Doldur, Kaydet ve Tekrarla düğmeleri kopyala-yapıştır kullanmaz.");''')
 
 f.write_text(s,encoding="utf-8")
