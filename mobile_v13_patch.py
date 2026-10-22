@@ -111,7 +111,7 @@ rep('        addMiniButton(actions,"Kullanıcı kopyala",()->copySecret("Kullan�
 '''        addMiniButton(actions,"🧩 Quetta", this::launchQuetta);
         addMiniButton(actions,"Kullanıcı kopyala",()->copySecret("Kullanıcı adı",user));''')
 
-rep('    private void openExternalBrowser() {',
+rep('    private void addMiniButton(LinearLayout parent, String caption, Runnable action) {',
 '''    private void launchQuetta() {
         if (vault == null) { unlock(this::launchQuetta); return; }
         if (activeRecord != null) rememberPending(activeRecord);
@@ -133,7 +133,7 @@ rep('    private void openExternalBrowser() {',
         ExtensionBrowserBridge.openRoblox(this);
     }
 
-    private void openExternalBrowser() {''')
+    private void addMiniButton(LinearLayout parent, String caption, Runnable action) {''')
 
 rep('        if("register".equals(screen)){',
 '''        if("register".equals(screen)){''')
