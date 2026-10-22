@@ -9,6 +9,7 @@ on:
       - "mobile_v11_patch.py"
       - "mobile_v13_patch.py"
       - "mobile_v14_patch.py"
+      - "mobile_v15_patch.py"
       - "FloatingBrowserBarService.java"
       - "ExtensionBrowserBridge.java"
 
@@ -32,6 +33,8 @@ jobs:
         run: python3 mobile_v13_patch.py
       - name: Quetta v1.4 gelistirmelerini ekle
         run: python3 mobile_v14_patch.py
+      - name: Quetta v1.5 panosuz eklenti baglantisini uygula
+        run: python3 mobile_v15_patch.py
       - name: Java 17 kur
         uses: actions/setup-java@v4
         with:
@@ -53,6 +56,6 @@ jobs:
       - name: APK dosyasini kaydet
         uses: actions/upload-artifact@v4
         with:
-          name: RobloxMobilKasa-v1-4-Quetta-APK
+          name: RobloxMobilKasa-v1-5-Quetta-APK
           path: unpacked/RobloxMobilKasa/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
