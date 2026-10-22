@@ -229,7 +229,7 @@ rep('    private void showDashboard()',
             error("Önce Kaydet ile hesabın başarıyla oluşturulduğunu doğrula.");
             return;
         }
-        prepareNextRegistration();
+        createNextRegistration();
     }
 
     private void showDashboard()''')
