@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/android-apk.yml"
       - "Roblox_Mobil_Kasa_Android_Kaynak_Kod_v1.zip"
+      - "mobile_v11_patch.py"
 
 permissions:
   contents: read
@@ -21,6 +22,8 @@ jobs:
           mkdir -p unpacked
           unzip -q Roblox_Mobil_Kasa_Android_Kaynak_Kod_v1.zip -d unpacked
           test -f unpacked/RobloxMobilKasa/app/build.gradle
+      - name: Mobil v1.1 degisikliklerini uygula
+        run: python3 mobile_v11_patch.py
       - name: Java 17 kur
         uses: actions/setup-java@v4
         with:
@@ -42,6 +45,6 @@ jobs:
       - name: APK dosyasini kaydet
         uses: actions/upload-artifact@v4
         with:
-          name: RobloxMobilKasa-APK
+          name: RobloxMobilKasa-v1-1-APK
           path: unpacked/RobloxMobilKasa/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
